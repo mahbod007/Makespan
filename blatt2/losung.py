@@ -82,6 +82,7 @@ class Machine(object):
     def removeJob(self, job):
         self.span -= job.getLength()
         self.assigned_jobs.remove(job)
+        job.in_machine = -1
 
 
 # Creates and returns a machines list
@@ -151,13 +152,14 @@ for i, machine in enumerate(machines):
 
 # Soreted remaining Job Assignment
 for job in jobs:
-    lowest_span = float('inf')
-    target_machine_index = -1
-    for i, machine in enumerate(machines):
-        if machine.span < lowest_span:
-            lowest_span = machine.span
-            target_machine_index = i 
-    machines[target_machine_index].addJob(job)
+    if job.in_machine == -1:
+        lowest_span = float('inf')
+        target_machine_index = -1
+        for i, machine in enumerate(machines):
+            if machine.span < lowest_span:
+                lowest_span = machine.span
+                target_machine_index = i 
+        machines[target_machine_index].addJob(job)
  
 print("Aufgabe2: ")
 print(weightiestMachine(machines))
@@ -209,13 +211,14 @@ for i in range(5):
 
     # Soreted remaining Job Assignment
     for job in jobs:
-        lowest_span = float('inf')
-        target_machine_index = -1
-        for i, machine in enumerate(machines):
-            if machine.span < lowest_span:
-                lowest_span = machine.span
-                target_machine_index = i
-        machines[target_machine_index].addJob(job)
+        if job.in_machine == -1:
+            lowest_span = float('inf')
+            target_machine_index = -1
+            for i, machine in enumerate(machines):
+                if machine.span < lowest_span:
+                    lowest_span = machine.span
+                    target_machine_index = i
+            machines[target_machine_index].addJob(job)
 
     print("Aufgabe4: ")
     print("Max Mahine: ")
