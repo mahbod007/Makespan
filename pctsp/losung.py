@@ -81,12 +81,14 @@ while start_node != current_node:
     if current_node == -1:
         current_node = 0
     optimal_path = -sys.maxsize
+    temp_current_node = 0
     for ind, node_instance in enumerate(node_instances):
         if not node_instance.isVisted() and current_node != ind:
             if optimal_path < node_instance.getPrize() - cost[current_node][ind] - node_instance.getPenalty():
                 optimal_path = node_instance.getPrize(
                 ) - cost[current_node][ind]
-                current_node = ind
+                temp_current_node = ind
+    current_node = temp_current_node
     trip_cost += optimal_path 
     visited_node_ind.append(current_node)
     node_instances[current_node].node_visited()
@@ -146,13 +148,15 @@ for main_ind, node_to_strat_with in enumerate(node_instances):
         if current_node == -1:
             current_node = main_ind
         optimal_path = -sys.maxsize
+        temp_current_node = 0
         for ind, node_instance in enumerate(node_instances):
             if not node_instance.isVisted() and current_node != ind:
                 if optimal_path < node_instance.getPrize() - cost[current_node][ind] - node_instance.getPenalty():
                     optimal_path = node_instance.getPrize(
-                    ) - cost[current_node][ind] 
-                    current_node = ind
-        trip_cost += optimal_path 
+                    ) - cost[current_node][ind]
+                    temp_current_node = ind
+        current_node = temp_current_node
+        trip_cost += optimal_path
         visited_node_ind.append(current_node)
         node_instances[current_node].node_visited()
 
@@ -197,3 +201,12 @@ for main_ind, node_to_strat_with in enumerate(node_instances):
 print("Overall Optimization on all Nodes:")
 print(main_trip_cost)
 print(visited_node_ind)
+
+priz = 0
+for it in range(0, len(visited_node_ind) - 1):
+    prize -= cost[visited_node_ind[it]][visited_node_ind[it+1]]
+
+for it in node_instances:
+    prize += it.getPrize()
+
+print(prize)
