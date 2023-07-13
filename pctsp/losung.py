@@ -98,8 +98,30 @@ for ind, node_instance in enumerate(node_instances):
     if not node_instance.isVisted():
         trip_cost -= node_instance.getPenalty()
 
+print("First Round Trip without Nodes:")
+print(trip_cost)
+print(visited_node_ind)
 
-print("First Round Trip:")
+# add node to round trip when it worth it
+node_can_be_added = True
+while (node_can_be_added):
+    node_can_be_added = False
+    for node_instance in node_instances:
+        if not node_instance.isVisted():
+            cost_of_candidate_node_to_add = node_instance.getPrize() + node_instance.getPenalty() - cost[visited_node_ind[len(visited_node_ind) - 2]][node_instance.getIndex()]
+            if cost_of_candidate_node_to_add > 0:
+                node_instance.node_visited()
+                node_can_be_added = True
+                trip_cost += node_instance.getPrize()
+                trip_cost += node_instance.getPenalty()
+                trip_cost -= cost[visited_node_ind[len(
+                    visited_node_ind) - 2]][node_instance.getIndex()]
+                visited_node_ind.insert(len(
+                    visited_node_ind) - 2, node_instance.getIndex())
+
+
+
+print("First Round Trip with Adding Nodes:")
 print(trip_cost)
 print(visited_node_ind)
 
@@ -165,11 +187,34 @@ for main_ind, node_to_strat_with in enumerate(node_instances):
         if not node_instance.isVisted():
             trip_cost -= node_instance.getPenalty()
 
+    print("Round Trip on without adding node node " + str(current_node))
+    print(visited_node_ind)
+
+    # add node to round trip when it worth it
+    node_can_be_added = True
+    while (node_can_be_added):
+        node_can_be_added = False
+        for node_instance in node_instances:
+            if not node_instance.isVisted():
+                cost_of_candidate_node_to_add = node_instance.getPrize() + node_instance.getPenalty() - \
+                    cost[visited_node_ind[len(
+                        visited_node_ind) - 2]][node_instance.getIndex()]
+                if cost_of_candidate_node_to_add > 0:
+                    node_instance.node_visited()
+                    node_can_be_added = True
+                    trip_cost += node_instance.getPrize()
+                    trip_cost += node_instance.getPenalty()
+                    trip_cost -= cost[visited_node_ind[len(
+                        visited_node_ind) - 2]][node_instance.getIndex()]
+                    visited_node_ind.insert(len(
+                        visited_node_ind) - 2, node_instance.getIndex())
+
+
 
     temp_visted_node_ind = visited_node_ind
     temp_trip_cost = trip_cost
 
-    print("Round Trip on node " + str(current_node))
+    print("Round Trip on with adding node node " + str(current_node))
     print(visited_node_ind)
 
     for ind in range(1, len(visited_node_ind) - 2):
@@ -201,12 +246,3 @@ for main_ind, node_to_strat_with in enumerate(node_instances):
 print("Overall Optimization on all Nodes:")
 print(main_trip_cost)
 print(visited_node_ind)
-
-priz = 0
-for it in range(0, len(visited_node_ind) - 1):
-    prize -= cost[visited_node_ind[it]][visited_node_ind[it+1]]
-
-for it in node_instances:
-    prize += it.getPrize()
-
-print(prize)
