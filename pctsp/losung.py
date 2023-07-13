@@ -209,13 +209,12 @@ for main_ind, node_to_strat_with in enumerate(node_instances):
                     visited_node_ind.insert(len(
                         visited_node_ind) - 2, node_instance.getIndex())
 
-
+    print("Round Trip on with adding node node " + str(current_node))
+    print(visited_node_ind)
 
     temp_visted_node_ind = visited_node_ind
     temp_trip_cost = trip_cost
 
-    print("Round Trip on with adding node node " + str(current_node))
-    print(visited_node_ind)
 
     for ind in range(1, len(visited_node_ind) - 2):
         temp_trip_cost += cost[visited_node_ind[ind - 1]][visited_node_ind[ind]]
@@ -237,9 +236,39 @@ for main_ind, node_to_strat_with in enumerate(node_instances):
         else:
             temp_trip_cost = trip_cost
 
-    print("Optimized Round Trip on node " + str(current_node))
+    print("Optimized Round Trip with Neighbour on node " + str(current_node))
     print(visited_node_ind)
     
+    temp_visted_node_ind = visited_node_ind
+    temp_trip_cost = trip_cost
+
+    for ind in range(1, len(visited_node_ind) - 3):
+        for swapInd in range(ind + 1, len(visited_node_ind) - 2):
+            temp_trip_cost += cost[visited_node_ind[ind - 1]][visited_node_ind[swapInd]]
+            temp_trip_cost += cost[visited_node_ind[swapInd]][visited_node_ind[ind + 1]]
+            temp_trip_cost += cost[visited_node_ind[swapInd - 1]
+                                ][visited_node_ind[ind]]
+            temp_trip_cost += cost[visited_node_ind[ind]
+                                ][visited_node_ind[swapInd + 1]]
+            
+            temp_trip_cost -= cost[visited_node_ind[ind - 1]
+                                ][visited_node_ind[ind]]
+            temp_trip_cost -= cost[visited_node_ind[ind]][visited_node_ind[ind + 1]]
+            temp_trip_cost -= cost[visited_node_ind[swapInd - 1]][visited_node_ind[swapInd]]
+            temp_trip_cost -= cost[visited_node_ind[swapInd]][visited_node_ind[swapInd + 1]]
+
+            if temp_trip_cost > trip_cost:
+                trip_cost = temp_trip_cost
+                temp_swap = temp_visted_node_ind[ind]
+                temp_visted_node_ind[ind] = temp_visted_node_ind[swapInd]
+                temp_visted_node_ind[swapInd] = temp_swap
+                visited_node_ind = temp_visted_node_ind
+            else:
+                temp_trip_cost = trip_cost
+ 
+    print("Optimized Round Trip with Non-Neighbour on node " + str(current_node))
+    print(visited_node_ind)
+
     if trip_cost > main_trip_cost:
         main_trip_cost = trip_cost
 
