@@ -198,14 +198,22 @@ for main_ind, node_to_strat_with in enumerate(node_instances):
             if not node_instance.isVisted():
                 cost_of_candidate_node_to_add = node_instance.getPrize() + node_instance.getPenalty() - \
                     cost[visited_node_ind[len(
-                        visited_node_ind) - 2]][node_instance.getIndex()]
+                        visited_node_ind) - 2]][node_instance.getIndex()] + cost[visited_node_ind[len(
+                        visited_node_ind) - 2]][visited_node_ind[len(
+                        visited_node_ind) - 1]] - cost[node_instance.getIndex()][visited_node_ind[len(
+                        visited_node_ind) - 1]]
                 if cost_of_candidate_node_to_add > 0:
                     node_instance.node_visited()
                     node_can_be_added = True
                     trip_cost += node_instance.getPrize()
                     trip_cost += node_instance.getPenalty()
+                    trip_cost += cost[visited_node_ind[len(
+                        visited_node_ind) - 2]][visited_node_ind[len(
+                        visited_node_ind) - 1]]
                     trip_cost -= cost[visited_node_ind[len(
                         visited_node_ind) - 2]][node_instance.getIndex()]
+                    trip_cost -= cost[node_instance.getIndex()][visited_node_ind[len(
+                        visited_node_ind) - 1]]
                     visited_node_ind.insert(len(
                         visited_node_ind) - 2, node_instance.getIndex())
 
